@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Livro {
     private int codigo;
     private String titulo;
@@ -6,6 +9,14 @@ public class Livro {
     private int edicao;
     private int anoPublicacao;
     private int exemplaresDisponiveis;
+    public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
+        for (Livro livro : livros) {
+            if (livro.getCodigo() == codigoLivro) {
+                return livro;
+            }
+        }
+        return null;
+    }
 
     // Métodos getters e setters
 

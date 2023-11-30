@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Biblioteca {
     private ArrayList<Livro> livros;
@@ -7,15 +8,6 @@ public class Biblioteca {
     private ArrayList<Emprestimo> operacoesEmprestimo;
     private ArrayList<Reserva> reservas;
 
-    // Métodos para emprestar, devolver, reservar livros
-
-    public void devolverLivro(Livro livro, Usuario usuario) {
-    }
-
-    public void reservarLivro(Livro livro, Usuario usuario) {
-    }
-
-    // ...
     public void emprestarLivro(String comando) {
         String[] parametros = comando.split(" ");
 
@@ -27,17 +19,20 @@ public class Biblioteca {
         int codigoUsuario = Integer.parseInt(parametros[1]);
         int codigoLivro = Integer.parseInt(parametros[2]);
 
-        Usuario usuario = encontrarUsuarioPorCodigo(codigoUsuario);
-        Livro livro = encontrarLivroPorCodigo(codigoLivro);
+        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
+
+        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
+
 
         if (usuario == null || livro == null) {
             System.out.println("Emprestimo não realizado. Usuário ou livro não encontrado.");
             return;
         }
 
+        /*
         if (temReservaPendente(usuario, livro)) {
             cancelarReserva(usuario, livro);
-        }
+        } */
         Emprestimo dataDevolucao = new Emprestimo();
 
         if (dataDevolucao.calcularDataDevolucao(usuario) != null) {
@@ -56,7 +51,7 @@ public class Biblioteca {
         }
     }
 
-    // CRIAR encontrarUsuarioPorCodigo, encontrarLivroPorCodigo, temReservaPendente, cancelarReserva
+    // CRIAR temReservaPendente, cancelarReserva
 
 
 }

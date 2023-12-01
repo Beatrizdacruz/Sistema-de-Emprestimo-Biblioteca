@@ -5,8 +5,15 @@ import java.util.List;
 public class Biblioteca {
     private ArrayList<Livro> livros;
     private ArrayList<Usuario> usuarios;
-    private ArrayList<Emprestimo> operacoesEmprestimo;
+    private ArrayList<Emprestimo> Emprestimo;
     private ArrayList<Reserva> reservas;
+
+    public Biblioteca() {
+        this.livros = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
+        this.Emprestimo = new ArrayList<>();
+        this.reservas = new ArrayList<>();
+    }
 
     public void emprestarLivro(String comando) {
         String[] parametros = comando.split(" ");
@@ -41,7 +48,7 @@ public class Biblioteca {
             operacao.setUsuario(usuario);
             operacao.setDataEmprestimo(new Date());
             operacao.setDataDevolucao(dataDevolucao.calcularDataDevolucao(usuario));
-            operacoesEmprestimo.add(operacao);
+            Emprestimo.add(operacao);
 
             livro.setExemplaresDisponiveis(livro.getExemplaresDisponiveis() - 1);
 

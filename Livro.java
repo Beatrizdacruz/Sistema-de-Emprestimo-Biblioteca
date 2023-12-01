@@ -9,6 +9,11 @@ public class Livro {
     private int edicao;
     private int anoPublicacao;
     private int exemplaresDisponiveis;
+
+
+    public Livro(int codigo, String titulo, String editora, String[] strings, int edicao, int anoPublicacao) {
+    }
+
     public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
         for (Livro livro : livros) {
             if (livro.getCodigo() == codigoLivro) {

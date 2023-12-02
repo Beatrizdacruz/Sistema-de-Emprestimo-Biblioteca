@@ -13,7 +13,6 @@ public class Program {
         listaDeUsuarios.add(new Professor(100, "Carlos Lucena"));
 
         List<Livro> listaDeLivros = new ArrayList<>();
-
         // Adicionando livros à lista
         listaDeLivros.add(new Livro(100, "Engenharia de Software", "Addison-Wesley", new String[]{"Ian Sommervile"}, 6, 2000));
         listaDeLivros.add(new Livro(101, "UML – Guia do Usuário", "Campus", new String[]{"Grady Booch", "James Rumbaugh", "Ivar Jacobson"}, 7, 2000));
@@ -24,12 +23,22 @@ public class Program {
         listaDeLivros.add(new Livro(400, "Design Patterns: Elements of Reusable Object-Oriented Software", "Addison-Wesley Professional", new String[]{"Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"}, 1, 1994));
         listaDeLivros.add(new Livro(401, "UML Distilled: A Brief Guide to the Standard Object Modeling Language", "Addison-Wesley Professional", new String[]{"Martin Fowler"}, 3, 2003));
 
-
+        List<Exemplar> listaDeExemplares = new ArrayList<>();
+        listaDeExemplares.add(new Exemplar(100, 01));
+        listaDeExemplares.add(new Exemplar(100, 02));
+        listaDeExemplares.add(new Exemplar(101, 03));
+        listaDeExemplares.add(new Exemplar(200, 04));
+        listaDeExemplares.add(new Exemplar(201, 05));
+        listaDeExemplares.add(new Exemplar(300, 06));
+        listaDeExemplares.add(new Exemplar(300, 07));
+        listaDeExemplares.add(new Exemplar(400, 8));
+        listaDeExemplares.add(new Exemplar(400, 9));
 
         // Criando instância da biblioteca
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.adicionarUsuarios(listaDeUsuarios);
         biblioteca.adicionarLivros(listaDeLivros);
+        biblioteca.adicionarExemplares(listaDeExemplares);
 
         String pedido = scanner.nextLine();
 

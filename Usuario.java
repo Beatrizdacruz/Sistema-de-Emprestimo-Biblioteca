@@ -11,8 +11,6 @@ public class Usuario {
     }
 
     public static Usuario encontrarUsuarioPorCodigo(List<Usuario> usuarios, int codigoUsuario) {
-        System.out.println("sobre os usuários:");
-        System.out.println(usuarios);
         System.out.println(codigoUsuario);
         for (Usuario usuario : usuarios) {
             if (usuario.getCodigo() == codigoUsuario) {

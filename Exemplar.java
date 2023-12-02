@@ -1,31 +1,43 @@
 import java.util.Date;
+import java.util.List;
 
 public class Exemplar {
-    private int codigo;
-    private Livro livro;
+    private int codigoLivro;
+    private int codigoExemplar;
     private boolean disponivel;
     private Date dataEmprestimo;
+    private Livro livro;
 
-    public Exemplar(int codigo, Livro livro) {
-        this.codigo = codigo;
-        this.livro = livro;
+    public Exemplar(int codigoLivro, int codigoExemplar) {
+        this.codigoLivro = codigoLivro;
+        this.codigoExemplar = codigoExemplar;
         this.disponivel = true;
-        this.dataEmprestimo = null;
+        this.dataEmprestimo = null;;
     }
 
-    public int getCodigo() {
-        return codigo;
+    static Exemplar encontrarExemplarPorCodigo(List<Exemplar> exemplares, int codigoLivro) {
+        System.out.println("buscando exemplar");
+        System.out.println(exemplares);
+        for (Exemplar exemplar : exemplares) {
+            System.out.println(exemplar);
+            if (exemplar.getCodigoLivro() == codigoLivro && exemplar.isDisponivel()) {
+                System.out.println("Exemplar encontrado:" + codigoLivro);
+                return exemplar;
+            }
+        }
+        return null;
     }
 
-    public Livro getLivro() {
-        return livro;
+    public int getCodigoLivro() {
+        return codigoLivro;
     }
-
     public boolean isDisponivel() {
+
         return disponivel;
     }
 
     public Date getDataEmprestimo() {
+
         return dataEmprestimo;
     }
 
@@ -42,4 +54,11 @@ public class Exemplar {
             dataEmprestimo = null;
         }
     }
+
+    public void setDisponivel(boolean disponivel) {
+
+        this.disponivel = disponivel;
+    }
+
+
 }

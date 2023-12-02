@@ -3,18 +3,26 @@ import java.util.Date;
 import java.util.List;
 
 public class Biblioteca {
+    private static Biblioteca instancia = null;
     private ArrayList<Livro> livros;
     private ArrayList<Exemplar> exemplares;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Emprestimo> emprestimos;
     private ArrayList<Reserva> reservas;
 
-    public Biblioteca() {
+    private Biblioteca() {
         this.livros = new ArrayList<>();
         this.exemplares = new ArrayList<>();
         this.usuarios = new ArrayList<>();
         this.emprestimos = new ArrayList<>();
         this.reservas = new ArrayList<>();
+    }
+
+    public static Biblioteca getInstance() {
+        if (instancia == null) {
+            instancia = new Biblioteca();
+        }
+        return instancia;
     }
 
     public void adicionarUsuarios(List<Usuario> novosUsuarios) {
@@ -43,41 +51,57 @@ public class Biblioteca {
         Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
         Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
         Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares,codigoLivro);
-
         Reserva reserva = new Reserva(usuario, livro, exemplares);
+        Emprestimo emprestimo = new Emprestimo();
 
         if (usuario == null || livro == null || exemplar == null) {
             System.out.println("Emprestimo não realizado. Usuário, livro ou exemplar não encontrado.");
             return;
         }
 
-        if (reserva.temReservaPendente()) {
-            reserva.cancelarReserva();
+        // Verifica se o usuário está "devedor" de um livro em atraso
+        if (usuario.isDevedor()) {
+            System.out.println("Emprestimo não realizado. Usuário está devedor de um livro em atraso.");
+            return;
         }
 
-        Date dataDevolucao = calcularDataDevolucao(usuario);
-        if (dataDevolucao != null) {
-            Emprestimo operacao = new Emprestimo();
-            operacao.setLivro(livro);
-            operacao.setUsuario(usuario);
-            operacao.setDataEmprestimo(new Date());
-            operacao.setDataDevolucao(dataDevolucao);
-            emprestimos.add(operacao);
+        // Verifica se o exemplar está disponível
+        if (!exemplar.isDisponivel()) {
+            System.out.println("Emprestimo não realizado. Exemplar não disponível.");
+            return;
+        }
 
-            exemplar.setDisponivel(false);
+        // Regras específicas para Alunos de Graduação e Pós-Graduação
+        if (usuario instanceof Aluno) {
+            Aluno aluno = (Aluno) usuario;
 
-            System.out.println("Emprestimo realizado com sucesso. Livro: " + livro.getTitulo() + ", Usuário: " + usuario.getNome());
-        } else {
-            System.out.println("Emprestimo não realizado. Não foi possível calcular a data de devolução.");
+            // Verifica limite de empréstimos em aberto
+            if (emprestimo.emprestimosEmAndamento(aluno) >= aluno.getLimiteEmprestimos()) {
+                System.out.println("Emprestimo não realizado. Limite de empréstimos em aberto atingido.");
+                return;
+            }
+
+            // Verifica reservas
+            if (reserva.temReservaPendente()) {
+                reserva.cancelarReserva();
+            }
+
+            emprestimo.realizarEmprestimo(usuario, livro, exemplar);
+        }
+
+        // Regras específicas para Professores
+        else if (usuario instanceof Professor) {
+            emprestimo.realizarEmprestimo(usuario, livro, exemplar);
         }
     }
 
 
     private Date calcularDataDevolucao(Usuario usuario) {
-        // Lógica para calcular a data de devolução com base no tipo de usuário
-        // Implemente conforme necessário
-        return new Date(); // Implemente a lógica real
+       //precisar criar a lógica, ainda.
+        return new Date();
     }
 
 
 }
+
+

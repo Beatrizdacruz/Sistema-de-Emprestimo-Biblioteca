@@ -35,7 +35,7 @@ public class Program {
         listaDeExemplares.add(new Exemplar(400, 9));
 
         // Criando instância da biblioteca
-        Biblioteca biblioteca = new Biblioteca();
+        Biblioteca biblioteca = Biblioteca.getInstance();
         biblioteca.adicionarUsuarios(listaDeUsuarios);
         biblioteca.adicionarLivros(listaDeLivros);
         biblioteca.adicionarExemplares(listaDeExemplares);

@@ -11,12 +11,21 @@ public class Livro {
     private int exemplaresDisponiveis;
 
 
-    public Livro(int codigo, String titulo, String editora, String[] strings, int edicao, int anoPublicacao) {
+    public Livro(int codigo, String titulo, String editora, String[] autores, int edicao, int anoPublicacao) {
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.editora = editora;
+        this.autores = autores;
+        this.edicao = edicao;
+        this.anoPublicacao = anoPublicacao;
     }
 
     public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
         for (Livro livro : livros) {
+            System.out.println(codigoLivro);
+            System.out.println(livro.getCodigo());
             if (livro.getCodigo() == codigoLivro) {
+                System.out.println("código do livro encontrado:" + livro);
                 return livro;
             }
         }

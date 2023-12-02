@@ -4,10 +4,19 @@ public class Usuario {
     private int codigo;
     private String nome;
 
+    public Usuario(int codigo, String nome) {
+        this.codigo = codigo;
+        this.nome = nome;
+
+    }
 
     public static Usuario encontrarUsuarioPorCodigo(List<Usuario> usuarios, int codigoUsuario) {
+        System.out.println("sobre os usuários:");
+        System.out.println(usuarios);
+        System.out.println(codigoUsuario);
         for (Usuario usuario : usuarios) {
             if (usuario.getCodigo() == codigoUsuario) {
+                System.out.println("Código do usuário encontrado:" + codigoUsuario);
                 return usuario;
             }
         }

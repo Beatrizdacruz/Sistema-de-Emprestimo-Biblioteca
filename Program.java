@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Program {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         List<Usuario> listaDeUsuarios = new ArrayList<>();
         // Adicionando usuários à lista
         listaDeUsuarios.add(new AlunoGraduacao(123, "João da Silva"));
@@ -25,10 +26,11 @@ public class Program {
 
 
 
-        Scanner scanner = new Scanner(System.in);
-
         // Criando instância da biblioteca
         Biblioteca biblioteca = new Biblioteca();
+        biblioteca.adicionarUsuarios(listaDeUsuarios);
+        biblioteca.adicionarLivros(listaDeLivros);
+
         String pedido = scanner.nextLine();
 
         // Realizando operações na biblioteca

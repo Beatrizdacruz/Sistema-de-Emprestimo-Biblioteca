@@ -15,6 +15,14 @@ public class Biblioteca {
         this.reservas = new ArrayList<>();
     }
 
+    public void adicionarUsuarios(List<Usuario> novosUsuarios) {
+        this.usuarios.addAll(novosUsuarios);
+    }
+
+    public void adicionarLivros(List<Livro> novosLivros) {
+        this.livros.addAll(novosLivros);
+    }
+
     public void emprestarLivro(String comando) {
         String[] parametros = comando.split(" ");
 
@@ -27,8 +35,9 @@ public class Biblioteca {
         int codigoLivro = Integer.parseInt(parametros[2]);
 
         Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
-
+        System.out.println(livro);
         Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
+        System.out.println(usuario);
 
 
         if (usuario == null || livro == null) {

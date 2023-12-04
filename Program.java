@@ -47,35 +47,27 @@ public class Program {
         comandos.put("emp", new EmprestimoComando(biblioteca));
         comandos.put("dev", new DevolucaoComando(biblioteca));
         comandos.put("res", new ReservaComando(biblioteca));
+        comandos.put("sai", new SairComando());
 
-        String pedido = scanner.nextLine().trim();
+        while (true) {
+            String pedido = scanner.nextLine().trim();
+            String[] parametros = pedido.split(" ");
 
-        String[] parametros = pedido.split(" ");
-        System.out.println(parametros[0]);
-        System.out.println(parametros[1]);
-        System.out.println(parametros[2]);
-        processarPedido(comandos, pedido);
+            if (parametros.length < 1) {
+                System.out.println("Comando inválido. Digite um comando válido.");
+                continue;
+            }
 
-
-        scanner.close();
-    }
-
-    private static void processarPedido(Map<String, Comando> comandos, String pedido) {
-        String[] parametros = pedido.split(" ");
-
-        if (parametros.length < 1) {
-            System.out.println("Comando inválido. Digite um comando válido.");
-            return;
-        }
-
-        String comando = parametros[0];
-        Comando executor = comandos.get(comando);
-        if (executor != null) {
-            executor.executar(parametros);
-        } else {
-            System.out.println("Comando inválido. Digite um comando válido.");
+            String comando = parametros[0];
+            Comando executor = comandos.get(comando);
+            if (executor != null) {
+                executor.executar(parametros);
+            } else {
+                System.out.println("Comando inválido. Digite um comando válido.");
+            }
         }
     }
+
 }
 
 

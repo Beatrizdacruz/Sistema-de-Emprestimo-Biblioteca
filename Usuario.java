@@ -5,6 +5,7 @@ public class Usuario {
     private int codigo;
     private String nome;
     Date dataDevolucaoDevedor;
+    int quantidadeReservas;
 
     public Usuario(int codigo, String nome) {
         this.codigo = codigo;
@@ -26,7 +27,6 @@ public class Usuario {
         }
     }
     public static Usuario encontrarUsuarioPorCodigo(List<Usuario> usuarios, int codigoUsuario) {
-        System.out.println(codigoUsuario);
         for (Usuario usuario : usuarios) {
             if (usuario.getCodigo() == codigoUsuario) {
                 System.out.println("Código do usuário encontrado:" + codigoUsuario);
@@ -34,6 +34,13 @@ public class Usuario {
             }
         }
         return null;
+    }
+    public void adicionarReserva() {
+        quantidadeReservas++;
+    }
+
+    public int getQuantidadeReservas() {
+        return quantidadeReservas;
     }
 
     public int getCodigo() {

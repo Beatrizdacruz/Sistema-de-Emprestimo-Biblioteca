@@ -1,14 +1,14 @@
-class DevolucaoComando implements Comando {
+public class ReservaComando implements Comando {
     private Biblioteca biblioteca;
 
-    public DevolucaoComando(Biblioteca biblioteca) {
+    public ReservaComando(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
     }
 
     @Override
     public void executar(String[] parametros) {
         if (parametros.length != 3) {
-            System.out.println("Comando de devolução inválido. Use o formato: dev código_usuario código_livro");
+            System.out.println("Comando de reserva inválido. Use o formato: res código_usuario código_livro");
             return;
         }
 
@@ -16,6 +16,6 @@ class DevolucaoComando implements Comando {
         String codigoUsuario = parametros[1];
         String codigoLivro = parametros[2];
 
-        biblioteca.devolverLivro(comando, codigoUsuario,codigoLivro);
+        biblioteca.reservarLivro(comando, codigoUsuario,codigoLivro);
     }
 }

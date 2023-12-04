@@ -13,9 +13,6 @@ public class Reserva {
         this.dataReserva = new Date();
         this.exemplares = exemplares;
     }
-    public Date getDataReserva() {
-        return dataReserva;
-    }
 
     public boolean temReservaPendente() {
         Exemplar exemplar = encontrarExemplarPorCodigo(livro.getCodigo());
@@ -42,7 +39,22 @@ public class Reserva {
         return null;
     }
 
+    public void realizarReserva() {
+        if (temReservaPendente()) {
+            exemplares.get(0).setDisponivel(false); // Marca o primeiro exemplar como indisponível
+            usuario.adicionarReserva();
+            livro.setReservado(true);
+            System.out.println("Reserva realizada com sucesso. Usuário: " + usuario.getNome() +
+                    ", Livro: " + livro.getTitulo());
+        } else {
+            System.out.println("Nenhum exemplar disponível para realizar a reserva.");
+        }
+    }
 
+
+    public Date getDataReserva() {
+        return dataReserva;
+    }
     public void setDataReserva(Date dataReserva) {
         this.dataReserva = dataReserva;
     }

@@ -16,10 +16,7 @@ public class Exemplar {
     }
 
     static Exemplar encontrarExemplarPorCodigo(List<Exemplar> exemplares, int codigoLivro) {
-        System.out.println("buscando exemplar");
-        System.out.println(exemplares);
         for (Exemplar exemplar : exemplares) {
-            System.out.println(exemplar);
             if (exemplar.getCodigoLivro() == codigoLivro && exemplar.isDisponivel()) {
                 System.out.println("Exemplar encontrado:" + codigoLivro);
                 return exemplar;

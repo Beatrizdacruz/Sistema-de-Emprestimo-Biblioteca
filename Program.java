@@ -46,9 +46,10 @@ public class Program {
         Map<String, Comando> comandos = new HashMap<>();
         comandos.put("emp", new EmprestimoComando(biblioteca));
         comandos.put("dev", new DevolucaoComando(biblioteca));
+        comandos.put("res", new ReservaComando(biblioteca));
 
         String pedido = scanner.nextLine().trim();
-        System.out.println(pedido.length());
+
         String[] parametros = pedido.split(" ");
         System.out.println(parametros[0]);
         System.out.println(parametros[1]);

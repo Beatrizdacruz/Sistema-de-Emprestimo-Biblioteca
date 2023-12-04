@@ -9,6 +9,7 @@ public class Livro {
     private int edicao;
     private int anoPublicacao;
     private int exemplaresDisponiveis;
+    private boolean reservado;
 
 
     public Livro(int codigo, String titulo, String editora, String[] autores, int edicao, int anoPublicacao) {
@@ -18,12 +19,12 @@ public class Livro {
         this.autores = autores;
         this.edicao = edicao;
         this.anoPublicacao = anoPublicacao;
+        this.reservado = false;
+
     }
 
     public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
         for (Livro livro : livros) {
-            System.out.println(codigoLivro);
-            System.out.println(livro.getCodigo());
             if (livro.getCodigo() == codigoLivro) {
                 System.out.println("código do livro encontrado:" + livro);
                 return livro;
@@ -32,7 +33,6 @@ public class Livro {
         return null;
     }
 
-    // Métodos getters e setters
 
     public int getCodigo() {
         return codigo;
@@ -87,5 +87,13 @@ public class Livro {
 
     public void setAnoPublicacao(int anoPublicacao) {
         this.anoPublicacao = anoPublicacao;
+    }
+
+    public boolean isReservado() {
+        return reservado;
+    }
+
+    public void setReservado(boolean reservado) {
+        this.reservado = reservado;
     }
 }

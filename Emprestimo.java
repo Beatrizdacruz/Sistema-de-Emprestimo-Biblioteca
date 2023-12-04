@@ -1,11 +1,15 @@
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ArrayList;
 
-public class Emprestimo {
+public class Emprestimo{
     private Livro livro;
+    private Exemplar exemplar;
     private Usuario usuario;
     private Date dataEmprestimo;
     private Date dataDevolucao;
+    private Biblioteca biblioteca;
+
 
     public Date calcularDataDevolucao(Usuario usuario) {
         int diasParaDevolucao = 14; // Padrão de 14 dias
@@ -37,6 +41,28 @@ public class Emprestimo {
         } else {
             System.out.println("Empresto não realizado. Não foi possível calcular a data de devolução.");
         }
+    }
+    public static Emprestimo encontrarEmprestimoPorUsuarioEExemplar(ArrayList<Emprestimo> emprestimos, Usuario usuario, Exemplar exemplar) {
+        for (Emprestimo emprestimo : emprestimos) {
+            if (emprestimo.getUsuario().equals(usuario) && emprestimo.getExemplar().equals(exemplar)) {
+                return emprestimo;
+            }
+        }
+        return null;
+    }
+
+    public void realizarDevolucao() {
+        if (!this.isDevolvido()) {
+            this.exemplar.setDisponivel(true);
+            this.setDataDevolucao(new Date());
+            System.out.println("Devolução realizada com sucesso.");
+        } else {
+            System.out.println("Este empréstimo já foi devolvido anteriormente.");
+        }
+    }
+
+    public boolean isDevolvido() {
+        return this.dataDevolucao != null;
     }
 
     public int emprestimosEmAndamento(Aluno aluno) {
@@ -72,6 +98,12 @@ public class Emprestimo {
 
     public void setDataDevolucao(Date dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+    public Exemplar getExemplar() {
+        return exemplar;
+    }
+    public void setExemplar(Exemplar exemplar) {
+        this.exemplar = exemplar;
     }
 
 }

@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Program {
     public static void main(String[] args) {
@@ -40,10 +42,40 @@ public class Program {
         biblioteca.adicionarLivros(listaDeLivros);
         biblioteca.adicionarExemplares(listaDeExemplares);
 
-        String pedido = scanner.nextLine();
-
         // Realizando operações na biblioteca
-        biblioteca.emprestarLivro(pedido);
+        Map<String, Comando> comandos = new HashMap<>();
+        comandos.put("emp", new EmprestimoComando(biblioteca));
+        comandos.put("dev", new DevolucaoComando(biblioteca));
 
+        String pedido = scanner.nextLine().trim();
+        System.out.println(pedido.length());
+        String[] parametros = pedido.split(" ");
+        System.out.println(parametros[0]);
+        System.out.println(parametros[1]);
+        System.out.println(parametros[2]);
+        processarPedido(comandos, pedido);
+
+
+        scanner.close();
+    }
+
+    private static void processarPedido(Map<String, Comando> comandos, String pedido) {
+        String[] parametros = pedido.split(" ");
+
+        if (parametros.length < 1) {
+            System.out.println("Comando inválido. Digite um comando válido.");
+            return;
+        }
+
+        String comando = parametros[0];
+        Comando executor = comandos.get(comando);
+        if (executor != null) {
+            executor.executar(parametros);
+        } else {
+            System.out.println("Comando inválido. Digite um comando válido.");
+        }
     }
 }
+
+
+

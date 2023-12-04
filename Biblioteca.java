@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Biblioteca {
@@ -37,20 +36,19 @@ public class Biblioteca {
         this.exemplares.addAll(novosExemplares);
     }
 
-    public void emprestarLivro(String comando) {
-        String[] parametros = comando.split(" ");
+    public void emprestarLivro(String comando, String codigoUsuario, String codigoLivro) {
+        //String[] parametros = comando.split(" ");
 
-        if (parametros.length != 3 || !parametros[0].equals("emp")) {
-            System.out.println("Comando inválido. Use o formato: emp código_usuario código_livro");
-            return;
+        if (!comando.equals("emp")) {
+            System.out.println("Comando inválido para empréstimo.");
         }
 
-        int codigoUsuario = Integer.parseInt(parametros[1]);
-        int codigoLivro = Integer.parseInt(parametros[2]);
+        int codigoUsuarioInt = Integer.parseInt(codigoUsuario);
+        int codigoLivroInt = Integer.parseInt(codigoLivro);
 
-        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
-        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
-        Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares,codigoLivro);
+        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuarioInt);
+        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivroInt);
+        Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares, codigoLivroInt);
         Reserva reserva = new Reserva(usuario, livro, exemplares);
         Emprestimo emprestimo = new Emprestimo();
 
@@ -78,7 +76,7 @@ public class Biblioteca {
             // Verifica limite de empréstimos em aberto
             if (emprestimo.emprestimosEmAndamento(aluno) >= aluno.getLimiteEmprestimos()) {
                 System.out.println("Emprestimo não realizado. Limite de empréstimos em aberto atingido.");
-                return;
+                //return;
             }
 
             // Verifica reservas
@@ -95,12 +93,38 @@ public class Biblioteca {
         }
     }
 
+    public void devolverLivro(String comando, String codUsuario, String codLivro) {
+        //String[] parametros = comando.split(" ");
 
-    private Date calcularDataDevolucao(Usuario usuario) {
-       //precisar criar a lógica, ainda.
-        return new Date();
+        if (!comando.equals("dev")) {
+            System.out.println("Comando inválido para devolver.");
+        }
+
+        int codigoUsuario = Integer.parseInt(codUsuario);
+        int codigoLivro = Integer.parseInt(codLivro);
+
+        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
+        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
+        Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares, codigoLivro);
+        Emprestimo emprestimo = Emprestimo.encontrarEmprestimoPorUsuarioEExemplar(emprestimos, usuario, exemplar);
+
+        if (usuario == null || livro == null || exemplar == null) {
+            System.out.println("Devolução não realizada. Usuário, livro ou exemplar não encontrado.");
+            return;
+        }
+
+        // Verifica se existe empréstimo em aberto para aquele livro e usuário
+        if (emprestimo == null) {
+            System.out.println("Devolução não realizada. Nenhum empréstimo em aberto encontrado.");
+            return;
+        }
+
+        // Realiza a devolução
+        emprestimo.realizarDevolucao();
+
+        System.out.println("Devolução realizada com sucesso. Usuário: " + usuario.getNome() +
+                ", Livro: " + livro.getTitulo());
     }
-
 
 }
 

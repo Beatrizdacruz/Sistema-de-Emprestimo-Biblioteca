@@ -24,6 +24,8 @@ public class Biblioteca {
         return instancia;
     }
 
+    public void adicionarEmprestimo(Emprestimo emprestimo) {emprestimos.add(emprestimo);}
+
     public void adicionarUsuarios(List<Usuario> novosUsuarios) {
         this.usuarios.addAll(novosUsuarios);
     }
@@ -49,7 +51,7 @@ public class Biblioteca {
         Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivroInt);
         Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares, codigoLivroInt);
         Reserva reserva = new Reserva(usuario, livro, exemplares);
-        Emprestimo emprestimo = new Emprestimo();
+        Emprestimo emprestimo = new Emprestimo(this, livro, exemplar, usuario);
 
         if (usuario == null || livro == null || exemplar == null) {
             System.out.println("Emprestimo não realizado. Usuário, livro ou exemplar não encontrado.");
@@ -106,8 +108,8 @@ public class Biblioteca {
         Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares, codigoLivro);
         Emprestimo emprestimo = Emprestimo.encontrarEmprestimoPorUsuarioEExemplar(emprestimos, usuario, exemplar);
 
-        if (usuario == null || livro == null || exemplar == null) {
-            System.out.println("Devolução não realizada. Usuário, livro ou exemplar não encontrado.");
+        if (usuario == null || livro == null) {
+            System.out.println("Devolução não realizada. Usuário ou livro não encontrado.");
             return;
         }
 
@@ -120,8 +122,7 @@ public class Biblioteca {
         // Realiza a devolução
         emprestimo.realizarDevolucao();
 
-        System.out.println("Devolução realizada com sucesso. Usuário: " + usuario.getNome() +
-                ", Livro: " + livro.getTitulo());
+
     }
 
     public String reservarLivro(String comando, String codUsuario, String codLivro) {

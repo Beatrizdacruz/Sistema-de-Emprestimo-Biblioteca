@@ -10,6 +10,12 @@ public class Emprestimo{
     private Date dataDevolucao;
     private Biblioteca biblioteca;
 
+    public Emprestimo(Biblioteca biblioteca, Livro livro, Exemplar exemplar, Usuario usuario) {
+        this.biblioteca = biblioteca;
+        this.livro = livro;
+        this.exemplar = exemplar;
+        this.usuario = usuario;
+    }
 
     public Date calcularDataDevolucao(Usuario usuario) {
         int diasParaDevolucao = 14; // Padrão de 14 dias
@@ -36,6 +42,7 @@ public class Emprestimo{
             this.dataDevolucao = dataDevolucao;
 
             exemplar.setDisponivel(false);
+            biblioteca.adicionarEmprestimo(this);
 
             System.out.println("Empresto realizado com sucesso. Livro: " + livro.getTitulo() + ", Usuário: " + usuario.getNome());
         } else {
@@ -44,7 +51,9 @@ public class Emprestimo{
     }
     public static Emprestimo encontrarEmprestimoPorUsuarioEExemplar(ArrayList<Emprestimo> emprestimos, Usuario usuario, Exemplar exemplar) {
         for (Emprestimo emprestimo : emprestimos) {
-            if (emprestimo.getUsuario().equals(usuario) && emprestimo.getExemplar().equals(exemplar)) {
+            //System.out.println("emprestimo tal:" + emprestimo.getUsuario() + " exemplar " + emprestimo.getExemplar());
+            if (emprestimo.getUsuario().equals(usuario)) {
+                //System.out.println("emprestimo encontrado:" + emprestimo);
                 return emprestimo;
             }
         }
@@ -55,14 +64,15 @@ public class Emprestimo{
         if (!this.isDevolvido()) {
             this.exemplar.setDisponivel(true);
             this.setDataDevolucao(new Date());
-            System.out.println("Devolução realizada com sucesso.");
+            System.out.println("Devolução realizada com sucesso. Usuário: " + usuario.getNome() +
+                    ", Livro: " + livro.getTitulo());
         } else {
             System.out.println("Este empréstimo já foi devolvido anteriormente.");
         }
     }
 
     public boolean isDevolvido() {
-        return this.dataDevolucao != null;
+        return this.dataDevolucao == null;
     }
 
     public int emprestimosEmAndamento(Aluno aluno) {

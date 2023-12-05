@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Exemplar {
     private int codigoLivro;
+
     private int codigoExemplar;
     private boolean disponivel;
     private Date dataEmprestimo;
@@ -56,6 +57,14 @@ public class Exemplar {
     public void setDisponivel(boolean disponivel) {
 
         this.disponivel = disponivel;
+    }
+
+    public int getCodigoExemplar() {
+        return codigoExemplar;
+    }
+
+    public void setCodigoExemplar(int codigoExemplar) {
+        this.codigoExemplar = codigoExemplar;
     }
 
 }

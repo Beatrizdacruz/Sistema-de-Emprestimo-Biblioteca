@@ -1,6 +1,7 @@
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Emprestimo{
     private Livro livro;
@@ -59,6 +60,17 @@ public class Emprestimo{
         }
         return null;
     }
+
+    // Na classe Emprestimo
+    public static Emprestimo encontrarEmprestimoPorExemplar(List<Emprestimo> emprestimos, Exemplar exemplar) {
+        for (Emprestimo emprestimo : emprestimos) {
+            if (emprestimo.getExemplar().equals(exemplar)) {
+                return emprestimo;
+            }
+        }
+        return null;
+    }
+
 
     public void realizarDevolucao() {
         if (!this.isDevolvido()) {

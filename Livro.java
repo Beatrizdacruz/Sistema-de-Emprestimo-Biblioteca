@@ -9,8 +9,34 @@ public class Livro {
     private int edicao;
     private int anoPublicacao;
     private int exemplaresDisponiveis;
+
+    private List<Reserva> reservas;
     private boolean reservado;
 
+    private List<Observador> observadores = new ArrayList<>();
+
+    public void registrarObservador(Observador observador) {
+        observadores.add(observador);
+    }
+
+    public void removerObservador(Observador observador) {
+        observadores.remove(observador);
+    }
+
+    private void notificarObservadores() {
+        for (Observador observador : observadores) {
+            observador.notificar(this);
+        }
+    }
+
+    // Método que verifica a condição de mais de duas reservas e notifica os observadores
+    public void verificarReservas() {
+        if (reservas.size() > 2) {
+            notificarObservadores();
+            this.reservado = true;
+        }
+        this.reservado = false;
+    }
 
     public Livro(int codigo, String titulo, String editora, String[] autores, int edicao, int anoPublicacao) {
         this.codigo = codigo;
@@ -19,9 +45,21 @@ public class Livro {
         this.autores = autores;
         this.edicao = edicao;
         this.anoPublicacao = anoPublicacao;
-        this.reservado = false;
-
+        this.reservas = new ArrayList<>();
     }
+
+
+
+    public void adicionarReserva(Reserva reserva) {
+        reservas.add(reserva);
+        verificarReservas();  //Adicionando uma reserva, verificando a condição para notificar observadores
+    }
+
+    public void removerReserva(Reserva reserva) {
+        reservas.remove(reserva);
+        verificarReservas();  // Removendo uma reserva, verificando a condição para notificar observadores
+    }
+
 
     public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
         for (Livro livro : livros) {
@@ -96,4 +134,14 @@ public class Livro {
     public void setReservado(boolean reservado) {
         this.reservado = reservado;
     }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+
 }

@@ -14,6 +14,7 @@ public class Reserva {
         this.exemplares = exemplares;
     }
 
+
     public boolean temReservaPendente() {
         Exemplar exemplar = encontrarExemplarPorCodigo(livro.getCodigo());
         return exemplar != null && exemplar.isDisponivel();

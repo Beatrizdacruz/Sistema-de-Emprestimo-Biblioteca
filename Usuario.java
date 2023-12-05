@@ -1,16 +1,21 @@
 import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
-public class Usuario {
+public class Usuario implements Observador{
     private int codigo;
     private String nome;
     Date dataDevolucaoDevedor;
     int quantidadeReservas;
+    private List<Emprestimo> emprestimos;
+    private List<Reserva> reservas;
 
     public Usuario(int codigo, String nome) {
         this.codigo = codigo;
         this.nome = nome;
         this.dataDevolucaoDevedor = null;
+        this.emprestimos = new ArrayList<>();
+        this.reservas = new ArrayList<>();
 
     }
 
@@ -55,5 +60,35 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    public Emprestimo[] getEmprestimos() {
+        if (emprestimos == null) {
+            return new Emprestimo[0];
+        }
+        return emprestimos.toArray(new Emprestimo[0]);
+    }
 
+
+    public Reserva[] getReservas() {
+        if (reservas == null) {
+            return new Reserva[0];
+        }
+        return emprestimos.toArray(new Reserva[0]);
+    }
+
+    private RegraDeEmprestimo regraDeEmprestimo;
+
+    public void setRegraEmprestimo(RegraDeEmprestimo regraEmprestimo) {
+        this.regraDeEmprestimo = regraEmprestimo;
+    }
+
+    public void realizarEmprestimo(Livro livro, Exemplar exemplar) {
+        if (regraDeEmprestimo != null) {
+            regraDeEmprestimo.realizarEmprestimo(this, livro, exemplar);
+        }
+    }
+
+    @Override
+    public void notificar(Livro livro) {
+
+    }
 }

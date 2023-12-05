@@ -47,6 +47,11 @@ public class Program {
         comandos.put("emp", new EmprestimoComando(biblioteca));
         comandos.put("dev", new DevolucaoComando(biblioteca));
         comandos.put("res", new ReservaComando(biblioteca));
+        comandos.put("obs", new ObservarComando(biblioteca));
+        comandos.put("liv", new ConsultarLivroComando(biblioteca));
+        comandos.put("usu", new ConsultaUsuarioComando(biblioteca));
+        comandos.put("ntf", new ConsultaNotificacoesComando(biblioteca));
+
         comandos.put("sai", new SairComando());
 
         while (true) {

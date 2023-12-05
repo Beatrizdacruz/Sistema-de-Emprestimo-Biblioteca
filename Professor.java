@@ -4,4 +4,6 @@ public class Professor extends Usuario {
 
         super(codigo, nome);
     }
+    // Instância de Professor
+
 }

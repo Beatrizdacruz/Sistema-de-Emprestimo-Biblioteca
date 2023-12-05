@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Biblioteca {
     private static Biblioteca instancia = null;
@@ -155,6 +156,10 @@ public class Biblioteca {
         // Realiza a reserva
         reserva.realizarReserva();
 
+        // Adiciona o professor como observador do livro
+        ObservadorProfessor observadorProfessor = new ObservadorProfessor();
+        livro.registrarObservador(observadorProfessor);
+
         System.out.println("Reserva realizada com sucesso. Usuário: " + usuario.getNome() +
                 ", Livro: " + livro.getTitulo());
         return comando;
@@ -168,6 +173,71 @@ public class Biblioteca {
             }
         }
         return exemplaresLivro;
+    }
+
+    // Na classe Biblioteca
+    public void consultarLivro(int codigoLivro) {
+        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
+
+        if (livro != null) {
+            System.out.println(livro.toString());
+        } else {
+            System.out.println("Livro não encontrado.");
+        }
+    }
+
+
+    public void adicionarObservadorAoLivro(int codigoUsuario, int codigoLivro) {
+        Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);
+        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
+
+        if (livro != null && usuario != null) {
+            ObservadorProfessor observadorProfessor = new ObservadorProfessor();
+            livro.registrarObservador(observadorProfessor);
+            System.out.println("Professor registrado como observador para o livro.");
+        } else {
+            System.out.println("Livro ou usuário não encontrado.");
+        }
+    }
+
+
+    public void consultarUsuario(int codigoUsuario) {
+        Usuario usuario = Usuario.encontrarUsuarioPorCodigo(usuarios, codigoUsuario);
+
+        if (usuario != null) {
+            System.out.println("Empréstimos do Usuário " + usuario.getNome() + ":");
+            for (Emprestimo emprestimo : usuario.getEmprestimos()) {
+                System.out.println(emprestimo);
+                System.out.println("Título do Livro: " + emprestimo.getLivro().getTitulo());
+                System.out.println("Data do Empréstimo: " + emprestimo.getDataEmprestimo());
+                System.out.println("Status: " + (emprestimo.getDataDevolucao().before(new Date())));
+                System.out.println("Data de Devolução: " + emprestimo.getDataDevolucao());
+            }
+
+            System.out.println("Reservas do Usuário " + usuario.getNome() + ":");
+            for (Reserva reserva : usuario.getReservas()) {
+                System.out.println("Título do Livro Reservado: " + reserva.getLivro().getTitulo());
+                System.out.println("Data da Reserva: " + reserva.getDataReserva());
+            }
+        } else {
+            System.out.println("Usuário não encontrado.");
+        }
+    }
+
+    public int consultarNotificacoesProfessor(int codigoProfessor) {
+        ObservadorProfessor observadorProfessor = new ObservadorProfessor();
+
+        // Adicionar o observadorProfessor à lista de observadores de livros
+        for (Livro livro : livros) {
+            livro.registrarObservador(observadorProfessor);
+        }
+
+        // Realizar notificações (simulação para o exemplo)
+        for (Livro livro : livros) {
+            livro.verificarReservas();
+        }
+
+        return observadorProfessor.getNotificacoes();
     }
 
 

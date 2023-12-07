@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
@@ -40,9 +41,9 @@ public class Biblioteca {
     }
 
     public void emprestarLivro(String comando, String codigoUsuario, String codigoLivro) {
-
         if (!comando.equals("emp")) {
             System.out.println("Comando inválido para empréstimo.");
+            return;
         }
 
         int codigoUsuarioInt = Integer.parseInt(codigoUsuario);
@@ -52,7 +53,6 @@ public class Biblioteca {
         Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivroInt);
         Exemplar exemplar = Exemplar.encontrarExemplarPorCodigo(exemplares, codigoLivroInt);
         Reserva reserva = new Reserva(usuario, livro, exemplares);
-        Emprestimo emprestimo = new Emprestimo(this, livro, exemplar, usuario);
 
         if (usuario == null || livro == null || exemplar == null) {
             System.out.println("Emprestimo não realizado. Usuário, livro ou exemplar não encontrado.");
@@ -75,6 +75,13 @@ public class Biblioteca {
         if (usuario instanceof Aluno) {
             Aluno aluno = (Aluno) usuario;
 
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            Date dataDevolucao = calendar.getTime();
+
+            // Crie o empréstimo com a data de devolução
+            Emprestimo emprestimo = new Emprestimo(this, livro, exemplar, usuario, dataDevolucao);
+
             // Verifica limite de empréstimos em aberto
             if (emprestimo.emprestimosEmAndamento(aluno) >= aluno.getLimiteEmprestimos()) {
                 System.out.println("Emprestimo não realizado. Limite de empréstimos em aberto atingido.");
@@ -86,14 +93,23 @@ public class Biblioteca {
                 reserva.cancelarReserva();
             }
 
+
             emprestimo.realizarEmprestimo(usuario, livro, exemplar);
         }
 
         // Regras específicas para Professores
         else if (usuario instanceof Professor) {
+            // Defina a data de devolução como duas semanas a partir de agora para professores
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.WEEK_OF_YEAR, 2);
+            Date dataDevolucao = calendar.getTime();
+
+            // Crie o empréstimo com a data de devolução
+            Emprestimo emprestimo = new Emprestimo(this, livro, exemplar, usuario, dataDevolucao);
             emprestimo.realizarEmprestimo(usuario, livro, exemplar);
         }
     }
+
 
     public void devolverLivro(String comando, String codUsuario, String codLivro) {
 
@@ -185,7 +201,15 @@ public class Biblioteca {
             System.out.println("Livro não encontrado.");
         }
     }
-
+    // Na classe Biblioteca
+    public Emprestimo encontrarEmprestimoPorExemplar(Exemplar exemplar) {
+        for (Emprestimo emprestimo : emprestimos) {
+            if (emprestimo.getExemplar().equals(exemplar) && !emprestimo.isDevolvido()) {
+                return emprestimo;
+            }
+        }
+        return null;
+    }
 
     public void adicionarObservadorAoLivro(int codigoUsuario, int codigoLivro) {
         Livro livro = Livro.encontrarLivroPorCodigo(livros, codigoLivro);

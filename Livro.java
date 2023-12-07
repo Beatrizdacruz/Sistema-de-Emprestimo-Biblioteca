@@ -9,11 +9,28 @@ public class Livro {
     private int edicao;
     private int anoPublicacao;
     private int exemplaresDisponiveis;
+    private int codigoExemplar;
 
     private List<Reserva> reservas;
     private boolean reservado;
 
     private List<Observador> observadores = new ArrayList<>();
+    private Exemplar[] exemplares;
+    private Biblioteca biblioteca;
+
+    public Livro(int codigo, String titulo, String editora, String[] autores, int edicao, int anoPublicacao) {
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.editora = editora;
+        this.autores = autores;
+        this.edicao = edicao;
+        this.anoPublicacao = anoPublicacao;
+        this.reservas = new ArrayList<>();
+        this.exemplares = new Exemplar[exemplaresDisponiveis];  // Inicializa o array de exemplares
+        //inicializarExemplares();
+    }
+
+
 
     public void registrarObservador(Observador observador) {
         observadores.add(observador);
@@ -33,23 +50,9 @@ public class Livro {
     public void verificarReservas() {
         if (reservas.size() > 2) {
             notificarObservadores();
-            this.reservado = true;
         }
         this.reservado = false;
     }
-
-    public Livro(int codigo, String titulo, String editora, String[] autores, int edicao, int anoPublicacao) {
-        this.codigo = codigo;
-        this.titulo = titulo;
-        this.editora = editora;
-        this.autores = autores;
-        this.edicao = edicao;
-        this.anoPublicacao = anoPublicacao;
-        this.reservas = new ArrayList<>();
-    }
-
-
-
     public void adicionarReserva(Reserva reserva) {
         reservas.add(reserva);
         verificarReservas();  //Adicionando uma reserva, verificando a condição para notificar observadores
@@ -64,7 +67,7 @@ public class Livro {
     public static Livro encontrarLivroPorCodigo(List<Livro> livros, int codigoLivro) {
         for (Livro livro : livros) {
             if (livro.getCodigo() == codigoLivro) {
-                System.out.println("código do livro encontrado:" + livro);
+                System.out.println("código do livro encontrado:" + livro.getCodigo());
                 return livro;
             }
         }
@@ -144,4 +147,39 @@ public class Livro {
     }
 
 
+    @Override
+    public String toString() {
+        StringBuilder details = new StringBuilder();
+        details.append("Título do Livro: ").append(titulo).append("\n");
+        details.append("Quantidade de Reservas: ").append(reservas.size()).append("\n");
+
+        for (Reserva reserva : reservas) {
+            details.append("Reserva por: ").append(reserva.getUsuario().getNome()).append("\n");
+        }
+
+        for (Exemplar exemplar : exemplares) {
+            details.append("Código do Exemplar: ").append(exemplar.getCodigoExemplar()).append("\n");
+            details.append("Status: ").append(exemplar.isDisponivel() ? "Disponível" : "Emprestado").append("\n");
+
+            if (!exemplar.isDisponivel()) {
+                Emprestimo emprestimo = biblioteca.encontrarEmprestimoPorExemplar(exemplar);
+                if (emprestimo != null) {
+                    details.append("Usuário do Empréstimo: ").append(emprestimo.getUsuario().getNome()).append("\n");
+                    details.append("Data do Empréstimo: ").append(emprestimo.getDataEmprestimo()).append("\n");
+                    details.append("Data Prevista para Devolução: ").append(emprestimo.getDataDevolucao()).append("\n");
+                }
+            }
+        }
+
+        return details.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Exemplar exemplar = (Exemplar) o;
+
+        return codigoExemplar == exemplar.getCodigoExemplar();
+    }
 }

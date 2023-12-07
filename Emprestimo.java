@@ -11,11 +11,12 @@ public class Emprestimo{
     private Date dataDevolucao;
     private Biblioteca biblioteca;
 
-    public Emprestimo(Biblioteca biblioteca, Livro livro, Exemplar exemplar, Usuario usuario) {
+    public Emprestimo(Biblioteca biblioteca, Livro livro, Exemplar exemplar, Usuario usuario,  Date dataDevolucao) {
         this.biblioteca = biblioteca;
         this.livro = livro;
         this.exemplar = exemplar;
         this.usuario = usuario;
+        this.dataDevolucao = dataDevolucao;
     }
 
     public Date calcularDataDevolucao(Usuario usuario) {
@@ -61,15 +62,8 @@ public class Emprestimo{
         return null;
     }
 
-    // Na classe Emprestimo
-    public static Emprestimo encontrarEmprestimoPorExemplar(List<Emprestimo> emprestimos, Exemplar exemplar) {
-        for (Emprestimo emprestimo : emprestimos) {
-            if (emprestimo.getExemplar().equals(exemplar)) {
-                return emprestimo;
-            }
-        }
-        return null;
-    }
+
+
 
 
     public void realizarDevolucao() {
@@ -88,9 +82,20 @@ public class Emprestimo{
     }
 
     public int emprestimosEmAndamento(Aluno aluno) {
-        // Lógica para contar a quantidade de empréstimos em andamento para o aluno
-        return 0;
+        int emprestimosEmAndamento = 0;
+
+        for (Emprestimo emprestimo : aluno.getEmprestimos()) {
+            if (emprestimo.isEmAndamento()) {
+                emprestimosEmAndamento++;
+            }
+        }
+
+        return emprestimosEmAndamento;
     }
+    public boolean isEmAndamento() {
+        return dataDevolucao== null;
+    }
+
 
     public Livro getLivro() {
         return livro;

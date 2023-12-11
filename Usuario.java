@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Usuario implements Observador{
     private int codigo;
@@ -18,6 +19,7 @@ public class Usuario implements Observador{
         this.reservas = new ArrayList<>();
 
     }
+
 
     public boolean isDevedor() {
         return dataDevolucaoDevedor != null && dataDevolucaoDevedor.before(new Date());
@@ -40,8 +42,11 @@ public class Usuario implements Observador{
         }
         return null;
     }
-    public void adicionarReserva() {
-        quantidadeReservas++;
+    public void adicionarReserva(Reserva reserva) {
+        if (reservas == null) {
+            reservas = new ArrayList<>();
+        }
+        reservas.add(reserva);
     }
 
     public int getQuantidadeReservas() {
@@ -62,6 +67,7 @@ public class Usuario implements Observador{
     }
     public Emprestimo[] getEmprestimos() {
         if (emprestimos == null) {
+            System.out.println("usuario sem emprestimos");
             return new Emprestimo[0];
         }
         return emprestimos.toArray(new Emprestimo[0]);
@@ -72,7 +78,7 @@ public class Usuario implements Observador{
         if (reservas == null) {
             return new Reserva[0];
         }
-        return emprestimos.toArray(new Reserva[0]);
+        return reservas.toArray(new Reserva[0]);
     }
 
     private RegraDeEmprestimo regraDeEmprestimo;
@@ -86,9 +92,33 @@ public class Usuario implements Observador{
             regraDeEmprestimo.realizarEmprestimo(this, livro, exemplar);
         }
     }
+    public void adicionarEmprestimo(Emprestimo emprestimo) {
+        if (emprestimos == null) {
+            emprestimos = new ArrayList<>();
+        }
+        emprestimos.add(emprestimo);
+    }
 
     @Override
     public void notificar(Livro livro) {
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Usuario usuario = (Usuario) obj;
+        return codigo == usuario.codigo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo);
+    }
+
 }

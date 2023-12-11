@@ -95,6 +95,7 @@ public class Biblioteca {
 
 
             emprestimo.realizarEmprestimo(usuario, livro, exemplar);
+            adicionarEmprestimo(emprestimo);
         }
 
         // Regras específicas para Professores
@@ -107,6 +108,7 @@ public class Biblioteca {
             // Crie o empréstimo com a data de devolução
             Emprestimo emprestimo = new Emprestimo(this, livro, exemplar, usuario, dataDevolucao);
             emprestimo.realizarEmprestimo(usuario, livro, exemplar);
+            adicionarEmprestimo(emprestimo);
         }
     }
 

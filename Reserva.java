@@ -42,8 +42,13 @@ public class Reserva {
 
     public void realizarReserva() {
         if (temReservaPendente()) {
-            exemplares.get(0).setDisponivel(false); // Marca o primeiro exemplar como indisponível
-            usuario.adicionarReserva();
+            Exemplar exemplarReservado = exemplares.get(0);
+            exemplarReservado.setDisponivel(false); // Marca o primeiro exemplar como indisponível
+
+            // Adiciona a reserva à lista de reservas do usuário
+            Reserva reserva = new Reserva(usuario, livro, exemplares);
+            usuario.adicionarReserva(reserva);
+
             livro.setReservado(true);
             System.out.println("Reserva realizada com sucesso. Usuário: " + usuario.getNome() +
                     ", Livro: " + livro.getTitulo());
@@ -51,6 +56,7 @@ public class Reserva {
             System.out.println("Nenhum exemplar disponível para realizar a reserva.");
         }
     }
+
 
 
     public Date getDataReserva() {

@@ -44,7 +44,7 @@ public class Emprestimo{
             this.dataDevolucao = dataDevolucao;
 
             exemplar.setDisponivel(false);
-            biblioteca.adicionarEmprestimo(this);
+            usuario.adicionarEmprestimo(this);
 
             System.out.println("Empresto realizado com sucesso. Livro: " + livro.getTitulo() + ", Usuário: " + usuario.getNome());
         } else {
@@ -53,9 +53,9 @@ public class Emprestimo{
     }
     public static Emprestimo encontrarEmprestimoPorUsuarioEExemplar(ArrayList<Emprestimo> emprestimos, Usuario usuario, Exemplar exemplar) {
         for (Emprestimo emprestimo : emprestimos) {
-            //System.out.println("emprestimo tal:" + emprestimo.getUsuario() + " exemplar " + emprestimo.getExemplar());
+            System.out.println("emprestimo tal:" + emprestimo.getUsuario() + " exemplar " + emprestimo.getExemplar());
             if (emprestimo.getUsuario().equals(usuario)) {
-                //System.out.println("emprestimo encontrado:" + emprestimo);
+                System.out.println("emprestimo encontrado:" + emprestimo);
                 return emprestimo;
             }
         }
